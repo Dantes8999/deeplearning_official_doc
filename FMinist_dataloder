@@ -1,0 +1,28 @@
+#############################第二步 制作数据迭代器####################
+
+#这一步是将上一个文件中的内容全部导入，分开多个文件，可以使程序更好调试，代码更安全
+from numpy.core.multiarray import nested_iters
+from FMinist_data_download_and_visulizaion import *
+
+#Dataloder是官方提供的一个很方便的迭代读取数据的工具
+from torch.utils.data import DataLoader
+
+train_dataloader = DataLoader(training_data, batch_size=64, shuffle=True)
+test_dataloder = DataLoader(test_data, batch_size=64, shuffle=True)
+
+#构建一个迭代器
+train_features, train_labels = next(iter(train_dataloader))
+# test_features, test_labels = next(iter(train_dataloader))
+print(f"TrainFeature batch shape:{train_features.size()}")
+print(f"TrainLabels batch shape:{train_labels.size()}")
+#这是在第一课见过的操作，删除了图片张量的第一维，通道，留下28*28的图片
+#查看第一个数据的图片及标签
+img = train_features[0].squeeze()
+label = train_labels[0]
+#查看一个训练数据
+#会发现，每次运行出现的图片都不一样，因为经过shuffle，每次第一个图片和标签都会变
+print(f"Label: {label}")
+plt.imshow(img)
+plt.show()
+
+
